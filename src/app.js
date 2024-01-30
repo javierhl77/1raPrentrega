@@ -79,8 +79,8 @@ app.put("/api/products/:pid", async(req,res) => {
     }
 })
 
-
-app.post("/api/carritos", async (req,res) => {
+//****************** */
+app.post("/api/carts", async (req,res) => {
     
 
     
@@ -96,8 +96,23 @@ app.post("/api/carritos", async (req,res) => {
 
 })
 
-app.put("api/carritos/:cid/productos/:pid", (req,res) => {
-
+app.post("api/carts/:cid/productos/:pid", async (req,res) => {
+  
+  let cId = parseInt(req.params.cid);
+  let pId = parseInt(req.params.pid);
+  try {
+    const carrito = await cartmanager.AddProductToCart(cId,pId);
+        console.log(carrito);
+         res.json(carrito)
+        res.status(201).json({message: "carrito creado con exito"});
+    
+  } catch (error) {
+    console.log("error al cargar producto en el carrito",error);
+    res.status(500).json({error: "error del servidor"});
+  }
+  
+  
+ 
     
 })
 

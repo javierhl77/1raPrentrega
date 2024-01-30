@@ -9,7 +9,7 @@ class CartManager {
   static idcart = 0; // variable estatica para el id autoincrementable
   constructor(path){
       this.path = path;
-      // arrays vacios para carts y products
+      
       this.carts = [];
       //this.products = [];
     }   
@@ -55,7 +55,8 @@ class CartManager {
 
 
       AddProductToCart = async (cartId,productId) =>  {
-            const cart = this.carts.find(carrito => carrito.id === cartId);
+            const arrayCarritos = await this.leerArchivos();
+            const cart = arrayCarritos.find(carrito => carrito.id === cartId);
             if(!cart) {
               console.log("no existe el carrito")
             }
@@ -66,7 +67,9 @@ class CartManager {
             } else {
               prod.cant++;
             }
+            //arrayCarritos.push(cart);
            await fs.writeFile( this.path,JSON.stringify(this.carts))
+           return (cart)
          }
       //readCarrito = async () => {
         //let respuesta = await fs.readFile(this.path, "utf-8")

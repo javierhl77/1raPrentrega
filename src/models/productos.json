@@ -46,5 +46,29 @@
     "status": true,
     "thumbnails": [],
     "id": 4
+  },
+  {
+    "title": "Mate4",
+    "description": "El mas rico",
+    "price": "3000",
+    "img": "Sin Imagen",
+    "code": "abc12345",
+    "stock": "15034",
+    "category": "Almacen",
+    "status": true,
+    "thumbnails": [],
+    "id": 5
+  },
+  {
+    "title": "Mate4",
+    "description": "El mas rico",
+    "price": "3000",
+    "img": "Sin Imagen",
+    "code": "abc123467",
+    "stock": "15034",
+    "category": "Almacen",
+    "status": true,
+    "thumbnails": [],
+    "id": 6
   }
 ]
