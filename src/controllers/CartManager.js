@@ -68,7 +68,7 @@ class CartManager {
               prod.cant++;
             }
             //arrayCarritos.push(cart);
-           await fs.writeFile( this.path,JSON.stringify(this.carts))
+           await fs.writeFile( this.path,JSON.stringify(arrayCarritos,null,2))
            return (cart)
          }
       //readCarrito = async () => {

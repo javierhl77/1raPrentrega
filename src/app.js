@@ -96,10 +96,10 @@ app.post("/api/carts", async (req,res) => {
 
 })
 
-app.post("api/carts/:cid/productos/:pid", async (req,res) => {
+app.post("/api/carts/:cid/productos/:pid", async (req,res) => {
   
   let cId = parseInt(req.params.cid);
-  let pId = parseInt(req.params.pid);
+  let pId = req.params.pid;
   try {
     const carrito = await cartmanager.AddProductToCart(cId,pId);
         console.log(carrito);
