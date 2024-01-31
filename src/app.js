@@ -104,16 +104,33 @@ app.post("/api/carts/:cid/productos/:pid", async (req,res) => {
     const carrito = await cartmanager.AddProductToCart(cId,pId);
         console.log(carrito);
          res.json(carrito)
-        res.status(201).json({message: "carrito creado con exito"});
+        res.status(201).json({message: " producto agregado al carrito"});
     
   } catch (error) {
     console.log("error al cargar producto en el carrito",error);
     res.status(500).json({error: "error del servidor"});
   }
-  
-  
- 
-    
+})
+
+// mostrar todos los carritos
+app.get("/api/carts", async (req,res) => {
+    const carts = await cartmanager.GetCart();
+    res.json(carts);
+    console.log(carts);
+})
+
+// mostrar el carrito correspondiente a su id
+app.get("/api/carts/:cid", async (req,res) => {
+     let cId = parseInt(req.params.cid)
+    try {
+        const cart = await cartmanager.GetCartById(cId);
+        res.json(cart);
+        res.status(201).json({message: " carrrito encontrado"});
+        console.log(cart);
+    } catch (error) {
+        console.log("error al buscar carrito",error);
+        res.status(500).json({error: "error del servidor"});
+    }
 })
 
 app.listen(PUERTO);

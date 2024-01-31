@@ -77,7 +77,7 @@ class CartManager {
       //}
       GetCart = async () => {
            let resp = await this.leerArchivos()
-
+           return(resp);
            console.log(resp);
           }
       GetCartById = async (id) => {
@@ -86,6 +86,7 @@ class CartManager {
              if (!cart){
               console.log("no existe el carrito")
              } else{
+              return(cart);
               console.log(cart)
              }
       }
