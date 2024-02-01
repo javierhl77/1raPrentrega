@@ -5,10 +5,8 @@ const router = express.Router();
 const CartsManager = require("../controllers/CartManager");
 const cartmanager = new CartsManager("./src/models/carritos.json");
 
-
+//crear-inicializar carrito con array de productos vacio
 router.post("/", async (req,res) => {
-    
-
     
     try {
        const nuevocarrito = await cartmanager.createCart();
@@ -21,15 +19,16 @@ router.post("/", async (req,res) => {
     }
 
 })
+//**------------------------------------------------------------------------- */
 
+// agregar producto a carrito ingresando
 router.post("/:cid/productos/:pid", async (req,res) => {
  
- let cId = parseInt(req.params.cid);
+ let cId = parseInt(req.params.cid);  // guardamos los parametros en cId y pId
  let pId = req.params.pid;
  try {
-   const carrito = await cartmanager.AddProductToCart(cId,pId);
+   const carrito = await cartmanager.AddProductToCart(cId,pId);  //llama al metodo AddProductToCart
        console.log(carrito);
-        
        res.status(201).json({message: " producto agregado al carrito"});
    
  } catch (error) {
@@ -37,14 +36,14 @@ router.post("/:cid/productos/:pid", async (req,res) => {
    res.status(500).json({error: "error del servidor"});
  }
 })
-
+//**------------------------------------------------------------------------------ */
 // mostrar todos los carritos
 router.get("/", async (req,res) => {
    const carts = await cartmanager.GetCart();
    res.json(carts);
    console.log(carts);
 })
-
+//**------------------------------------------------------------------------------- */
 // mostrar el carrito correspondiente a su id
 router.get("/:cid", async (req,res) => {
     let cId = parseInt(req.params.cid)
