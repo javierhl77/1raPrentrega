@@ -6,131 +6,21 @@ const express = require ("express");
 const app = express();
 const PUERTO = 8080;
 
-const ProductManager = require("../src/controllers/productManager.js");
-const cartManager = require ("../src/controllers/CartManager.js");
-const productManager = new ProductManager("./src/models/productos.json");
-const cartmanager = new cartManager("./src/models/carritos.json");
+const productsRouter = require("./routes/products.router.js");
+const cartsRouter = require ("./routes/carts.router.js");
+
+
+
+//const productManager = new ProductManager("./src/models/productos.json");
+//const cartmanager = new cartManager("./src/models/carritos.json");
 
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
-//listar todos los productos
-
-app.get("/api/products", async (req, res) => {
-  
-    try {
-        const limit = req.query.limit;
-        const productos = await productManager.getProducts();
-
-        if (limit) {
-            res.json(productos.slice(0, limit));
-        } else {
-            res.json(productos);
-        }
-    } catch (error) {
-        console.log("Error al obtener los productos", error);
-        res.status(500).json({ error: "Error del servidor" });
-    }
-
-})
-
-// devolver el producto correspondiente a su id
-app.get("/api/products/:pid", async (req,res) => {
-     let id = req.params.pid;
-     try {
-        const productos = await productManager.getProductsById(parseInt(id))
-        if (!productos){
-            res.json({
-                error: "producto no encontrado"
-            })
-        } else {
-            res.json(productos)
-        }
-     } catch (error) {
-        console.log("Error al obtener los productos", error);
-        res.status(500).json({ error: "Error del servidor" });
-     }
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 
 
-})
-
-app.post("/api/products", async (req,res) => {
-     const nuevoProducto = req.body;
-     console.log(nuevoProducto);
-     try {
-        await productManager.addProduct(nuevoProducto),
-        res.status(201).json({message: "producto agregado con exito"});
-     } catch (error) {
-        console.log("error al agregar producto", error);
-        res.status(500).json({error: "error del servidor"});
-     }
-
-})
-
-app.put("/api/products/:pid", async(req,res) => {
-    let id = req.params.pid;
-    const productoActualizado = req.body;
-    try {
-        await productManager.updateProduct(parseInt(id),productoActualizado )
-        res.json({message: "producto actualizado corectanmente"});
-    } catch (error) {
-        console.log("no pudo actualizar");
-        res.status(500).json({error: "error del server"});
-
-    }
-})
-
-//****************** */
-app.post("/api/carts", async (req,res) => {
-    
-
-    
-     try {
-        const nuevocarrito = await cartmanager.createCart();
-        console.log(nuevocarrito);
-        res.json(nuevocarrito);
-        res.status(201).json({message: "carrito creado con exito"});
-     } catch (error) {
-        console.log("error al agregar carrito", error);
-        res.status(500).json({error: "error del servidor"});
-     }
-
-})
-
-app.post("/api/carts/:cid/productos/:pid", async (req,res) => {
-  
-  let cId = parseInt(req.params.cid);
-  let pId = req.params.pid;
-  try {
-    const carrito = await cartmanager.AddProductToCart(cId,pId);
-        console.log(carrito);
-         res.json(carrito)
-        res.status(201).json({message: " producto agregado al carrito"});
-    
-  } catch (error) {
-    console.log("error al cargar producto en el carrito",error);
-    res.status(500).json({error: "error del servidor"});
-  }
-})
-
-// mostrar todos los carritos
-app.get("/api/carts", async (req,res) => {
-    const carts = await cartmanager.GetCart();
-    res.json(carts);
-    console.log(carts);
-})
-
-// mostrar el carrito correspondiente a su id
-app.get("/api/carts/:cid", async (req,res) => {
-     let cId = parseInt(req.params.cid)
-    try {
-        const cart = await cartmanager.GetCartById(cId);
-        res.json(cart);
-        res.status(201).json({message: " carrrito encontrado"});
-        console.log(cart);
-    } catch (error) {
-        console.log("error al buscar carrito",error);
-        res.status(500).json({error: "error del servidor"});
-    }
-})
-
-app.listen(PUERTO);
+app.listen(PUERTO, () => {
+    console.log(`escuchando en el puerto: ${PUERTO}`);
+});
